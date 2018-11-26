@@ -1,0 +1,7 @@
+{
+  "name": "cs4750_webapp",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
+}
