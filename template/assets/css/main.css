@@ -71,6 +71,12 @@
 		padding: 0;
 	}
 
+	.btn-group button {
+		background-color: #20B2AA;
+		color: white;
+		padding: 10px 24px;
+	}
+
 	input, select, textarea {
 		-moz-appearance: none;
 		-webkit-appearance: none;
@@ -3869,5 +3875,6 @@
 			#cta {
 				padding: 2.5em 1em 3em 1em;
 			}
+			
 
 	}
