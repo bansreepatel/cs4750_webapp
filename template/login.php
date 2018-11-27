@@ -1,7 +1,5 @@
 <?php
 
-	echo "hello";
-
 	$servername = "localhost";
 	$username = "root";
 	$password = "password";
@@ -12,10 +10,7 @@
 	// Check connection
 	if ($conn->connect_error) {
 			die("Connection failed: " . $conn->connect_error);
-	}else{
-		echo "Connected successfully";
 	}
-
 ?>
 
 <html>
@@ -46,35 +41,35 @@
 
 					<h2>Library Management System</h2>
 
-					<form>
-						<p> </p>
-						<div class="align-center">
-							<div class="col-4 col-12-mobilep">
-								<input class="align-center" type="submit" value="Sign In As User" class="fit" />
-							</div>
+					<!-- <form> -->
+					<p> </p>
+					<div class="align-center">
+						<div class="col-4 col-12-mobilep">
+							<input class="align-center" type="submit" value="Sign In As User" class="fit" onclick="window.location='user_login.php';" />
 						</div>
-						<p> </p>
-						<div class="align-center">
-							<div class="col-4 col-12-mobilep">
-								<input class="align-center" type="submit" value="Sign In As Admin" class="fit" />
-							</div>
+					</div>
+					<p> </p>
+					<div class="align-center">
+						<div class="col-4 col-12-mobilep">
+							<input class="align-center" type="submit" value="Sign In As Admin" class="fit" onclick="window.location='admin_login.php';" />
 						</div>
-						<p> </p>
-						<div class="align-center">
-							<div class="col-4 col-12-mobilep">
-								<input class="align-center" type="submit" value="Create an Account" class="fit" />
-							</div>
+					</div>
+					<p> </p>
+					<div class="align-center">
+						<div class="col-4 col-12-mobilep">
+							<input class="align-center" type="submit" value="Create an Account" class="fit" onclick="window.location='create_account.php';" />
 						</div>
-					</form>
+					</div>
+					<!-- </form> -->
 
 				</section>
 
 			<!-- Footer -->
-				<footer id="footer">
+				<!-- <footer id="footer">
 					<ul class="copyright">
 						<li>&copy; Library Management System. All rights reserved.</li><li>Design: HTML5 UP</li>
 					</ul>
-				</footer>
+				</footer> -->
 
 		</div>
 

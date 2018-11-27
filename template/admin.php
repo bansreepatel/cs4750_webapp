@@ -1,16 +1,95 @@
 <?php
+// session_name("current session");
+session_start();
+// echo print_r($_SESSION);
+
 $servername = "localhost";
-$username = "username";
+$username = "root";
 $password = "password";
+$dbname = "cs4750_project";
 
 // Create connection
-$conn = new mysqli($servername, $username, $password);
+$conn = new mysqli($servername, $username, $password, $dbname);
 
 // Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-echo "Connected successfully";
+// echo "Connected successfully";
+
+$sql = "SELECT * FROM bookcopies WHERE book_status = 'out'";
+$result = $conn->query($sql);
+$books =[];
+$copy_id = [];
+$users = [];
+$num_rows = $result->num_rows;
+$count = 0;
+while ($row = $result->fetch_assoc()) {
+    $books[] = $row['isbn'];
+    $copy_id[] = $row['copy_ID'];
+    $users[] = $row['user_id'];
+}
+
+$book_strs = [];
+foreach ($books as $book) {
+  $sql = "SELECT * FROM books WHERE isbn = $book";
+  $result = $conn->query($sql);
+  $row = $result->fetch_assoc();
+  $book_strs[] = $row['book_title'] . ", ". $row['book_author'] . " (" . $row['book_genre'] . ")";
+}
+
+$users_strs = [];
+foreach ($users as $user) {
+  $sql = "SELECT * FROM users WHERE user_id = $user";
+  $result = $conn->query($sql);
+  $row = $result->fetch_assoc();
+  $users_strs[] = $row['first_name'] . " ". $row['last_name'] . " (" . $row['email'] . ")";
+}
+
+$strings = [];
+while( $count < $num_rows){
+  $this_string = $book_strs[$count] . " | " . $users_strs[$count];
+  $strings[] = $this_string;
+  $count = $count + 1;
+}
+
+$count = 0;
+
+//check in form
+if (isset($_POST['id'])) {
+  // session_start();
+  $copy_id = (int)$_POST["id"];
+
+  $sql = "UPDATE bookcopies SET book_status='in', user_id=NULL WHERE copy_ID = $copy_id";
+  $result = $conn->query($sql);
+
+  if($result === TRUE){
+    $session = $_SESSION['session_id'];
+    // echo "session" . $session;
+    $query = "INSERT INTO transactions (transaction_desc, session_ID) VALUES ('checking in a book', $session)";
+    $res = $conn->query($query);
+
+    if($res === TRUE){
+      Header('Location: '.$_SERVER['PHP_SELF']);
+      echo "Book Checked In Successfully!";
+    }
+  }else{
+    echo "An error occurred when processing your request.";
+  }
+}
+
+//logout form
+if (isset($_POST['logout'])) {
+  $time = (string)time();
+  // echo print_r($_SESSION);
+  $session = $_SESSION['session_id'];
+  // echo $session;
+  $query = "UPDATE sessions SET end_date = '$time' WHERE session_id = '$session'";
+  $result = $conn->query($query);
+  session_destroy();
+  header('Location: login.php');
+  // echo "logging out";
+}
 ?>
 
 <html>
@@ -33,39 +112,35 @@ echo "Connected successfully";
 							<li><a href="index.html">Home</a></li>
 							<li><a href="#" class="button">Sign Up</a></li>
 						</ul> -->
+            <form method="post"> <input type="hidden" id="logout" name="logout" value="logout"> <button type="submit" class="align-right">Log Out</button></form>
             </nav>
         </header>
 
         <!-- CTA -->
         <section id="cta">
 
-            <h2>Users</h2>
+            <h2>Checked Out Copies</h2>
 
-            <form>
-                <div class="align-center">
-                    <p> </p>
-                    <div class="btn-group" style="list-style-type:square">
-                        <ul> John Smith </ul>
-                        Harry Potter and the Deathly Hallows (Movie) <p> </p>
-                        <button> Check In </button>
-                        <p> </p>
-                        Catcher in the Rye (Book) <p> </p>
-                        <button> Check In </button>
-                    </div>
-                    <p> </p>
-                </div>
-                <p> </p>
+            <?php foreach($strings as $string): ?>
+            <form method="post">
+              <p> </p>
+              <div class="btn-group">
+                <?php echo $string; $count = $count +1;?></br>
+                <button type="submit"> Check In </button>
+                <input type="hidden" id="id" name="id" value="<?php echo $copy_id[$count-1];?>">
+              </div>
             </form>
+            <?php endforeach; ?>
 
         </section>
 
         <!-- Footer -->
-        <footer id="footer">
+        <!-- <footer id="footer">
             <ul class="copyright">
                 <li>&copy; Library Management System. All rights reserved.</li>
                 <li>Design: HTML5 UP</li>
             </ul>
-        </footer>
+        </footer> -->
 
     </div>
 
