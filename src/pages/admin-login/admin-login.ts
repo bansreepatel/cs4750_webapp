@@ -8,10 +8,10 @@ import { AdminProfilePage } from '../admin-profile/admin-profile';
 
 @IonicPage()
 @Component({
-  selector: 'page-login',
-  templateUrl: 'login.html'
+  selector: 'page-admin-login',
+  templateUrl: 'admin-login.html'
 })
-export class LoginPage {
+export class AdminLoginPage {
   // The account fields for the login form.
   // If you're using the username field with or without email, make
   // sure to add it to the type
@@ -32,17 +32,16 @@ export class LoginPage {
       this.loginErrorString = value;
     })
   }
-
-  // login as user
-  doLogin() {
+// login as admin
+  adminLogin() {
     this.user.login(this.account).subscribe((resp) => {
-      this.navCtrl.push(MainPage);
+      this.navCtrl.push(AdminProfilePage);
     }, (err) => {
-      this.navCtrl.push(MainPage);
-      // Unable to log in
+      this.navCtrl.push(AdminProfilePage);
+      // unable to log in 
       let toast = this.toastCtrl.create({
         message: this.loginErrorString,
-        duration: 3000,
+        duration: 3000, 
         position: 'top'
       });
       toast.present();
