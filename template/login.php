@@ -1,3 +1,23 @@
+<?php
+
+	echo "hello";
+
+	$servername = "localhost";
+	$username = "root";
+	$password = "password";
+
+	// Create connection
+	$conn = new mysqli($servername, $username, $password);
+
+	// Check connection
+	if ($conn->connect_error) {
+			die("Connection failed: " . $conn->connect_error);
+	}else{
+		echo "Connected successfully";
+	}
+
+?>
+
 <html>
 	<head>
 		<title>Library Management System</title>
@@ -7,6 +27,7 @@
 	</head>
 
 	<body class="landing is-preload">
+
 		<div id="page-wrapper">
 
 			<!-- Header -->
@@ -23,22 +44,25 @@
 			<!-- CTA -->
 				<section id="cta">
 
-					<h2>Admin Log In</h2>
+					<h2>Library Management System</h2>
 
 					<form>
+						<p> </p>
 						<div class="align-center">
-							<div class="align-center">
-								<input class="align-center" type="email" name="email" id="email" placeholder="Email Address" />
-							</div>
-							<p> </p>
-							<div class="align-center">
-								<input class="align-center" type="password" name="password" id="password" placeholder="Password" />
+							<div class="col-4 col-12-mobilep">
+								<input class="align-center" type="submit" value="Sign In As User" class="fit" />
 							</div>
 						</div>
 						<p> </p>
 						<div class="align-center">
 							<div class="col-4 col-12-mobilep">
-								<input class="align-center" type="submit" value="Sign In" class="fit" />
+								<input class="align-center" type="submit" value="Sign In As Admin" class="fit" />
+							</div>
+						</div>
+						<p> </p>
+						<div class="align-center">
+							<div class="col-4 col-12-mobilep">
+								<input class="align-center" type="submit" value="Create an Account" class="fit" />
 							</div>
 						</div>
 					</form>

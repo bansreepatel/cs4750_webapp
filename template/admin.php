@@ -1,3 +1,18 @@
+<?php
+$servername = "localhost";
+$username = "username";
+$password = "password";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+echo "Connected successfully";
+?>
+
 <html>
 
 <head>
@@ -20,44 +35,26 @@
 						</ul> -->
             </nav>
         </header>
-        
+
         <!-- CTA -->
         <section id="cta">
 
-            <h2>Create Account</h2>
+            <h2>Users</h2>
 
             <form>
                 <div class="align-center">
-                    <div class="align-center">
-                        <input class="align-center" type="text" name="email" id="firstname" placeholder="First Name" />
+                    <p> </p>
+                    <div class="btn-group" style="list-style-type:square">
+                        <ul> John Smith </ul>
+                        Harry Potter and the Deathly Hallows (Movie) <p> </p>
+                        <button> Check In </button>
+                        <p> </p>
+                        Catcher in the Rye (Book) <p> </p>
+                        <button> Check In </button>
                     </div>
                     <p> </p>
-                    <div class="align-center">
-                        <input class="align-center" type="text" name="email" id="lastname" placeholder="Last Name" />
-                    </div>
-                    <p> </p>
-                    <div class="align-center">
-                        <input class="align-center" type="text" name="email" id="address" placeholder="Home Address" />
-                    </div>
-                    <p> </p>
-                    <div class="align-center">
-                        <input class="align-center" type="text" name="email" id="phonenumber" placeholder="Phone Number" />
-                    </div>
-                    <p> </p>
-                    <div class="align-center">
-                        <input class="align-center" type="email" name="email" id="email" placeholder="Email Address" />
-                    </div>
-                    <p> </p>
-                    <div class="align-center">
-                        <input class="align-center" type="password" name="password" id="password" placeholder="Password" />
-                    </div>
                 </div>
                 <p> </p>
-                <div class="align-center">
-                    <div class="col-4 col-12-mobilep">
-                        <input class="align-center" type="submit" value="Sign In" class="fit" />
-                    </div>
-                </div>
             </form>
 
         </section>

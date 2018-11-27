@@ -1,6 +1,6 @@
 <?php
-$servername = "DESKTOP-RHMGMNE";
-$username = "root";
+$servername = "localhost";
+$username = "username";
 $password = "password";
 
 // Create connection
@@ -12,7 +12,6 @@ if ($conn->connect_error) {
 }
 echo "Connected successfully";
 ?>
-
 
 <html>
 	<head>
@@ -42,18 +41,19 @@ echo "Connected successfully";
 					<h2>User Log In</h2>
 
 					<form>
-						<div class="row gtr-50 gtr-uniform">
-							<div class="col-8 col-12-mobilep col-md-offset-5">
-								<input type="email" name="email" id="email" placeholder="Email Address" />
+						<div class="align-center">
+							<div class="align-center">
+								<input class="align-center" type="email" name="email" id="email" placeholder="Email Address" />
 							</div>
-							<div class="col-8 col-12-mobilep col-md-offset-5">
-								<input type="password" name="password" id="password" placeholder="Password" />
+							<p> </p>
+							<div class="align-center">
+								<input class="align-center" type="password" name="password" id="password" placeholder="Password" />
 							</div>
 						</div>
-
-						<div class="row gtr-50 gtr-uniform">
+						<p> </p>
+						<div class="align-center">
 							<div class="col-4 col-12-mobilep">
-								<input type="submit" value="Sign In" class="fit" />
+								<input class="align-center" type="submit" value="Sign In" class="fit" />
 							</div>
 						</div>
 					</form>
