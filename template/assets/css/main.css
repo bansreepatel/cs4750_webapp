@@ -71,6 +71,20 @@
 		padding: 0;
 	}
 
+	.btn-group button {
+		background-color: #20B2AA;
+		color: white;
+		padding: 10px 24px;
+	}
+
+	ul {
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+		overflow: hidden;
+		background-color: #333333;
+	}
+
 	input, select, textarea {
 		-moz-appearance: none;
 		-webkit-appearance: none;
@@ -123,7 +137,7 @@
 		-ms-transition: color 0.2s ease-in-out, border-bottom-color 0.2s ease-in-out;
 		transition: color 0.2s ease-in-out, border-bottom-color 0.2s ease-in-out;
 		border-bottom: dotted 1px;
-		color: #e89980;
+		color: #008B8B;
 		text-decoration: none;
 	}
 
@@ -2109,8 +2123,8 @@
 		input[type="email"]:focus,
 		select:focus,
 		textarea:focus {
-			border-color: #e89980;
-			box-shadow: 0 0 0 2px #e89980;
+			border-color: #008B8B;
+			box-shadow: 0 0 0 2px #008B8B;
 		}
 
 	select {
@@ -2210,8 +2224,8 @@
 
 		input[type="checkbox"]:focus + label:before,
 		input[type="radio"]:focus + label:before {
-			border-color: #e89980;
-			box-shadow: 0 0 0 1px #e89980;
+			border-color: #008B8B;
+			box-shadow: 0 0 0 1px #008B8B;
 		}
 
 	input[type="checkbox"] + label:before {
@@ -2401,7 +2415,7 @@
 			}
 
 			.icon.major.accent2 {
-				background: #e89980;
+				background: #008B8B;
 				color: #ffffff;
 			}
 
@@ -2827,7 +2841,7 @@
 		input[type="reset"].primary,
 		input[type="button"].primary,
 		.button.primary {
-			background-color: #e89980;
+			background-color: #008B8B;
 			color: #ffffff !important;
 		}
 
@@ -2835,14 +2849,14 @@
 			input[type="reset"].primary:hover,
 			input[type="button"].primary:hover,
 			.button.primary:hover {
-				background-color: #ecaa96;
+				background-color: #008B8B;
 			}
 
 			input[type="submit"].primary:active,
 			input[type="reset"].primary:active,
 			input[type="button"].primary:active,
 			.button.primary:active {
-				background-color: #e4886a;
+				background-color:#008B8B;
 			}
 
 		input[type="submit"].disabled, input[type="submit"]:disabled,
@@ -3108,7 +3122,7 @@
 			}
 
 			.dropotron li.active > a, .dropotron li.active > span, .dropotron li:hover > a, .dropotron li:hover > span {
-				background: #e89980;
+				background: #008B8B;
 				color: #ffffff;
 			}
 
@@ -3282,7 +3296,7 @@
 /* CTA */
 
 	#cta {
-		background: #e89980;
+		background: #008B8B;
 		color: #f9e6df;
 		padding: 3.5em 0 4em 0;
 		text-align: center;
@@ -3304,7 +3318,7 @@
 		#cta .button {
 			box-shadow: none;
 			background: #fff;
-			color: #e89980;
+			color: #008B8B;
 		}
 
 		#cta input[type="text"],
@@ -3869,5 +3883,6 @@
 			#cta {
 				padding: 2.5em 1em 3em 1em;
 			}
+			
 
 	}
