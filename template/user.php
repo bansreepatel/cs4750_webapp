@@ -15,117 +15,64 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-// echo "Connected successfully";
-
-$sql = "SELECT * FROM books";
-$result = $conn->query($sql);
-$books =[];
-$isbns = [];
-$count = 0;
-$search_results = NULL;
-while ($row = $result->fetch_assoc()) {
-    $isbns[] = $row['ISBN'];
-    $books[] = $row['book_title'] . ", ". $row['book_author'] . ", " . $row['book_genre'];
-    // echo $row['book_title'] . ", ". $row['book_author'] . ", " . $row['book_genre'];
-}
 
 //borrow form
 if (isset($_POST['id'])) {
-  // session_start();
   $id = (int)$_POST["id"];
-  // echo $id;
-
-  $sql = "SELECT * FROM bookcopies WHERE isbn = $id";
+  $sql = "SELECT * FROM bookcopies WHERE isbn = $id AND book_status = 'in'";
   $result = $conn->query($sql);
-  // echo print_r($result);
-
   if ($result->num_rows > 0) {
-    $borrowed = FALSE;
     $num_rows = $result->num_rows;
     $count = 0;
-
-    while($count < $num_rows) {
-      // echo $result->num_rows;
-      $row = $result->fetch_assoc();
-      // echo print_r($row);
-      // echo "count" . $count;
-
-      if ($row['book_status'] === "in"){
-        $copy = (int)$row['copy_ID'];
-
-        $uid = $_SESSION["uid"];
-        // echo print_r($_SESSION);
-        // echo $uid;
-        $sql = "UPDATE bookcopies SET book_status='out', user_id='$uid' WHERE copy_ID = $copy";
-        $result = $conn->query($sql);
-
-        if($result === TRUE){
-          $borrowed = TRUE;
-
-          $session = $_SESSION['session_id'];
-          // echo "session" . $session;
-          $query = "INSERT INTO transactions (transaction_desc, session_ID) VALUES ('borrowing a book', $session)";
-          $res = $conn->query($query);
-
-          if($res === TRUE){
-            echo "Book Borrowed Successfully!";
-            break;
-          }
-        }
+    $row = $result->fetch_assoc();
+    $copy = (int)$row['copy_ID'];
+    $uid = $_SESSION["uid"];
+    $sql = "UPDATE bookcopies SET book_status='out', user_id='$uid' WHERE copy_ID = $copy";
+    $result = $conn->query($sql);
+    if($result === TRUE){
+      $session = $_SESSION['session_id'];
+      $query = "INSERT INTO transactions (transaction_desc, session_ID) VALUES ('borrowing a book', $session)";
+      $res = $conn->query($query);
+      if($res === TRUE){
+        echo "Book Borrowed Successfully!";
       }
-      $count = $count +1;
     }
-    if($borrowed == FALSE){
-      echo "No Available Copies of this Book";
-    }
+  }else{
+    echo "No Available Copies of this Book";
   }
 }
 
 //logout form
 if (isset($_POST['logout'])) {
   $time = (string)time();
-  // echo print_r($_SESSION);
   $session = $_SESSION['session_id'];
-  // echo $session;
   $query = "UPDATE sessions SET end_date = '$time' WHERE session_id = '$session'";
   $result = $conn->query($query);
   session_destroy();
   header('Location: login.php');
-  // echo "logging out";
 }
+
+$books = [];
+$num_copies = [];
 
 //search form
 if (isset($_POST['search'])) {
   $search = $_POST['search'];
   $search_str = "%" . $search . "%";
-
-  // echo $search_str;
   $query = "SELECT * FROM books WHERE (isbn LIKE '$search_str') OR (book_title LIKE '$search_str') OR (book_author LIKE '$search_str')";
-  // $query = "SELECT * FROM books WHERE isbn ='$search'";
   $result = $conn->query($query);
-  // echo print_r($result);
-
-  $search_results = [];
-
   $num_rows = $result->num_rows;
   $count = 0;
-
   while($count < $num_rows) {
     $row = $result->fetch_assoc();
-    $string = "ISBN: " . $row['ISBN'] . " | " . $row['book_title'] . ", " . $row['book_author'];
-    $search_results[] = $string;
+    $isbn = $row['ISBN'];
+    $my_query = "SELECT * FROM bookcopies WHERE isbn = $isbn AND book_status = 'in'";
+    $res = $conn->query($my_query);
+    $num_copies[$isbn] = $res->num_rows;
+    $books[] = $row;
     $count = $count +1;
-    // echo print_r($result);
   }
-
-  // while ($row = $result->fetch_assoc()) {
-  //      $result = $row['isbn'] . " | " . $row['book_title'] . ", " . $row['book_author'];
-  //      $search_results[] = $result;
-  //      echo $result;
-  // }
-
 }
-
 ?>
 
 <html>
@@ -135,72 +82,76 @@ if (isset($_POST['search'])) {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="assets/css/main.css" />
+
+    <style>
+      table, th, td {
+        border: 1px solid white;
+        color:white;
+      }
+      tr {
+        color:white;
+      }
+    </style>
 </head>
 
 <body class="landing is-preload">
-    <div id="page-wrapper">
+    <!-- <div id="page-wrapper"> -->
         <!-- Header -->
         <header id="header" class="alt">
             <h1>Library Management System</h1>
             <nav id="nav">
-                <!-- <ul>
-							<li><a href="index.html">Home</a></li>
-							<li><a href="#" class="button">Sign Up</a></li>
-						</ul> -->
             <form method="post"> <input type="hidden" id="logout" name="logout" value="logout"> <button type="submit" class="align-right">Log Out</button></form>
             </nav>
 
         </header>
         <!-- CTA -->
-        <section id="cta">
+        <section id="cta" class="align-left" style="color:white; ">
 
             <form method="post">
-              <div class="align-center">
+              <!-- <div class="align-center"> -->
                   <div class="align-center">
-                      <input class="align-center" type="text" id="search" name="search" placeholder="Search" />
-                      <p> </p>
-                      <input class="align-center" type="submit" id="search_button" value="Go" />
+                    <p>Enter a search term to begin</p>
+                    <input class="align-center" type="text" id="search" name="search" placeholder="Search" />
+                    <p> </p>
+                    <input class="align-center" type="submit" id="search_button" value="Go" />
                   </div>
             </form>
 
-            <?php if($search_results !== NULL) : ?>
 
-              <h3>Search Results</h3>
+            <h3>Books</h3>
 
-              <?php foreach($search_results as $item): ?>
-              <div class="btn-group">
-                <?php echo $item;?></br>
-              </div>
-              <p> </p>
+            <table class="align-left" style="table-layout:fixed; width:80%; text-align:left; color:white; margin-left:10%; margin-right:500px; border:2px solid white; border-collapse:collapse; background-color:#008B8B;">
+              <tr>
+                <th style="color:white;">ISBN</th>
+                <th style="color:white;">Title</th>
+                <th style="color:white;">Author</th>
+                <th style="color:white;">Genre</th>
+                <th style="color:white;">Available Copies</th>
+                <th style="color:white;">Borrow</th>
+              </tr>
+              <?php foreach($books as $this_book): ?>
+                <tr style="background-color:#008B8B;">
+                  <td><?php echo $this_book['ISBN'];?></td>
+                  <td><?php echo $this_book['book_title'];?></td>
+                  <td><?php echo $this_book['book_author'];?></td>
+                  <td><?php echo $this_book['book_genre'];?></td>
+                  <td><?php echo $num_copies[$this_book['ISBN']];?></td>
+                  <td>
+                    <?php if($num_copies[$this_book['ISBN']] > 0) : ?>
+                    <form method="post">
+                        <button type="submit">Borrow</button>
+                        <input type="hidden" id="id" name="id" value="<?php echo $this_book['ISBN'];?>">
+                    </form>
+                    <?php endif; ?>
+                  </td>
+                </tr>
               <?php endforeach; ?>
-            <?php endif; ?>
+            </table>
 
-            <p> </p>
-
-            <h3>Browse Items</h3>
-
-            <?php foreach($books as $this_book): ?>
-            <form method="post">              
-              <div class="btn-group">
-                <?php echo $this_book; $count = $count +1;?></br>
-                <button type="submit"> Borrow </button>
-                <input type="hidden" id="id" name="id" value="<?php echo $isbns[$count-1];?>">
-              </div>
-              <p> </p>
-            </form>
-            <?php endforeach; ?>
 
         </section>
 
-        <!-- Footer -->
-        <!-- <footer id="footer">
-            <ul class="copyright">
-                <li>&copy; Library Management System. All rights reserved.</li>
-                <li>Design: HTML5 UP</li>
-            </ul>
-        </footer> -->
-
-    </div>
+    <!-- </div> -->
 
     <!-- Scripts -->
     <script src="assets/js/jquery.min.js"></script>
