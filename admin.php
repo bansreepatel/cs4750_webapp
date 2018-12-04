@@ -103,6 +103,18 @@ while($count < $num_rows) {
   $count = $count +1;
 }
 
+//loading user roles
+$query = "SELECT * FROM userrole";
+$result = $conn->query($query);
+$num_rows = $result->num_rows;
+$count = 0;
+$all_users = [];
+while($count < $num_rows) {
+  $row = $result->fetch_assoc();
+  $all_users[] = $row;
+  $count = $count +1;
+}
+
 //check in form
 if (isset($_POST['id'])) {
   // session_start();
@@ -249,6 +261,7 @@ if (isset($_POST['logout'])) {
 
           <table class="align-left" style="table-layout:fixed; width:80%; text-align:left; color:white; margin-left:10%; margin-right:500px; border:2px solid white; border-collapse:collapse; background-color:#008B8B;">
             <tr>
+              <th style="color:white;">Role</th>
               <th style="color:white;">First Name</th>
               <th style="color:white;">Last Name</th>
               <th style="color:white;">Email</th>
@@ -257,6 +270,7 @@ if (isset($_POST['logout'])) {
             </tr>
             <?php foreach($all_users as $this_user): ?>
               <tr style="background-color:#008B8B;">
+                <td><?php echo $this_user['role_name'];?></td>
                 <td><?php echo $this_user['first_name'];?></td>
                 <td><?php echo $this_user['last_name'];?></td>
                 <td><?php echo $this_user['email'];?></td>
